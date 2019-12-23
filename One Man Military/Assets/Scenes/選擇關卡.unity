@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 666846151}
   - component: {fileID: 666846150}
   - component: {fileID: 666846154}
+  - component: {fileID: 666846155}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -329,11 +330,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff4a184ac8b58544800ab9f17372397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 12
+  runSpeed: 8
   jumpHeight: 12
   fall: -12
   jumpSound: {fileID: 8300000, guid: d5619a474d662864cba4e895e9795c3b, type: 3}
   srPlayer: {fileID: 666846152}
+--- !u!114 &666846155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666846149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f007f072f4dd6445a5afa9ce08c27e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idle:
+  - {fileID: 21300000, guid: 45d26cc5ed474ca418cf6a6ff40e4c44, type: 3}
+  idleFrameRate: 8
+  run:
+  - {fileID: 21300000, guid: 7ecf0d831d4c3fd4280ec3b196fcf5c0, type: 3}
+  - {fileID: 21300002, guid: 7ecf0d831d4c3fd4280ec3b196fcf5c0, type: 3}
+  - {fileID: 21300004, guid: 7ecf0d831d4c3fd4280ec3b196fcf5c0, type: 3}
+  - {fileID: 21300006, guid: 7ecf0d831d4c3fd4280ec3b196fcf5c0, type: 3}
+  runFrameRate: 8
+  jump:
+  - {fileID: 21300000, guid: 5c23bc4706efd4a4eb39c426c70291cd, type: 3}
+  jumpFrameRate: 8
+  frameRate: 8
 --- !u!1 &1241564782
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +521,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.35294116, g: 0.7647059, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
