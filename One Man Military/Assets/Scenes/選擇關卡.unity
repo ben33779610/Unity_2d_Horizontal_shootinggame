@@ -366,12 +366,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 45d26cc5ed474ca418cf6a6ff40e4c44, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3268208d7b7e10a408527c62b6fcb841, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff4a184ac8b58544800ab9f17372397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 12
+  runSpeed: 8
   jumpHeight: 12
   fall: -12
   jumpSound: {fileID: 8300000, guid: d5619a474d662864cba4e895e9795c3b, type: 3}
@@ -418,6 +418,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 666846149}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: 0e3bd09559a99664c97a4e2c420852bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -428,6 +429,29 @@ MonoBehaviour:
   HealthBar: {fileID: 1695807455}
   Hurt: {fileID: 0}
   heartsound: {fileID: 0}
+=======
+  m_Script: {fileID: 11500000, guid: 4f007f072f4dd6445a5afa9ce08c27e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idle:
+  - {fileID: 21300000, guid: 3268208d7b7e10a408527c62b6fcb841, type: 3}
+  - {fileID: 21300000, guid: 3268208d7b7e10a408527c62b6fcb841, type: 3}
+  - {fileID: 21300000, guid: 291be08a671867840b48a93969a18982, type: 3}
+  idleFrameRate: 8
+  run:
+  - {fileID: 21300000, guid: d081dada952cd80499079d477e8ca9e3, type: 3}
+  - {fileID: 21300000, guid: 341d3dbf6a7ff5f459e5453aff3b502e, type: 3}
+  - {fileID: 21300000, guid: 27461ba145b627a4e9c8f8c906d44327, type: 3}
+  - {fileID: 21300000, guid: 33fbc7fa322848a429a333fad2811f30, type: 3}
+  runFrameRate: 8
+  jump:
+  - {fileID: 21300000, guid: d685444332f5fa14997a8ad58fc07f6b, type: 3}
+  - {fileID: 21300000, guid: d685444332f5fa14997a8ad58fc07f6b, type: 3}
+  - {fileID: 21300000, guid: d685444332f5fa14997a8ad58fc07f6b, type: 3}
+  - {fileID: 21300000, guid: 36a85204d831251469fd1c48afa54063, type: 3}
+  jumpFrameRate: 8
+  frameRate: 8
+>>>>>>> 40fd23234fff7ab8cb79873eda7a534f793d0fe9
 --- !u!1 &1241564782
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,7 +759,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.35294116, g: 0.7647059, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
