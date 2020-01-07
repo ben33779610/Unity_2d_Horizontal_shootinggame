@@ -4,8 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class Playerhealth : MonoBehaviour
 {
-	//血量
-	public int hearts = 10;
 
 	public AudioSource auo;
 	//受到攻擊的聲音
@@ -23,7 +21,7 @@ public class Playerhealth : MonoBehaviour
 	private bool cangetHurt = true;
 
 	//2d圖型絢染
-	private SpriteRenderer rend;
+	public SpriteRenderer rend;
 
 
 	private int health;
@@ -51,12 +49,12 @@ public class Playerhealth : MonoBehaviour
 	public IEnumerator CheckHealth()
 	{
 
-		//updateHearts();
+		UpdateHearts();
 
 		if (curhealth <= 0 && dead == false)
 		{
 			dead = true;
-			Instantiate(deathanim, transform.position, Quaternion.Euler(0, 180, 0));
+			//Instantiate(deathanim, transform.position, Quaternion.Euler(0, 180, 0));
 			BroadcastMessage("died", SendMessageOptions.DontRequireReceiver);
 
 			// 將2D渲染設為關閉
@@ -78,11 +76,11 @@ public class Playerhealth : MonoBehaviour
 	{
 		GetComponent<AudioSource>().PlayOneShot(heartsound);
 		//吃到愛心所增加的血量
-		curhealth += 2;
+		curhealth += 1;
 		//如果吃的血量超過設定值就不要再增加了
-		if (health > 6)
+		if (curhealth > 10)
 		{
-			health = 6;
+			curhealth = 10;
 
 		}
 		//更新血量
@@ -95,6 +93,7 @@ public class Playerhealth : MonoBehaviour
 		if (Hurt.sizeDelta.x > HealthBar.sizeDelta.x)
 
 		{
+
 
 			//讓傷害量(紅色血條)逐漸追上當前血量
 
@@ -109,12 +108,13 @@ public class Playerhealth : MonoBehaviour
 
 	void Start()
     {
-		health = hearts ;
+		health = 10 ;
 		curhealth = health;
-		
-		
+		cangetHurt = true;
+		rend = GetComponent< SpriteRenderer>();
+		auo = GetComponent<AudioSource>();
 
-		
+
 
 	}
 
@@ -124,40 +124,28 @@ public class Playerhealth : MonoBehaviour
 
 	}
 
-	void OnTriggerStay(Collider other)
-	{
-		if (other.tag == "enemy" || other.tag == "trap")
-		{
-			if (cangetHurt && !dead)
-			{
-				cangetHurt = false;
-				GetComponent<AudioSource>().PlayOneShot(hitsound);
-				health -= 1;
-				StartCoroutine(CheckHealth());
-				StartCoroutine(ResetCanHurt());
-				                            }
-			                    }
-		//碰到補血道具要增加血量
-         if (other.GetComponent<Collider>().tag == "heart")
-		{
-			Destroy(other.gameObject);
-			AddHealth();
-			                     }
-		             }
 
-	//碰撞到怪物或是陷阱時受到傷害,若只有碰撞傷害若玩家不動就只會觸發一次	
-  	 void OnCollisionStay(Collision other)
+
+	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
-		 if (other.collider.tag == "enemy" || other.collider.tag == "trap")
+		print(hit.gameObject.name);
+		if (hit.gameObject.tag == "enemy" || hit.gameObject.tag == "trap")
 		{
 			if (cangetHurt && !dead)
 			{
+				print(curhealth);
 				cangetHurt = false;
 				GetComponent<AudioSource>().PlayOneShot(hitsound);
-				health -= 1;
+				curhealth -= 1;
 				StartCoroutine(CheckHealth());
 				StartCoroutine(ResetCanHurt());
 			}
+		}
+		//碰到補血道具要增加血量
+		if (hit.gameObject.tag == "heart")
+		{
+			Destroy(hit.gameObject);
+			AddHealth();
 		}
 	}
 
