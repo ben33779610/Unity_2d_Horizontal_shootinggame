@@ -29,10 +29,13 @@ public class PlayerControl : MonoBehaviour
 	private bool canCeiling = true;
 
     public SpriteRenderer srPlayer;
+
+	private FixedJoystick joystick;
 	
 	void Start () 
     {
 		controller = GetComponent<CharacterController>();
+		joystick = GameObject.Find("虛擬搖桿").GetComponent<FixedJoystick>();
 		lookX = transform.localScale.x;
 	}
 	
@@ -61,16 +64,17 @@ public class PlayerControl : MonoBehaviour
             // transform.localScale = new Vector3(-lookX,transform.localScale.y,transform.localScale.z);
             srPlayer.flipX = true;
 		}
-		
+
 		//設定移動按鍵
 		//鍵盤上下左右作為移動按鍵
-		if(canControl)
-        {
-			if(Input.GetKey("left") || Input.GetKey("right"))
+		if (canControl)
+		{
+			/*if(Input.GetKey("left") || Input.GetKey("right"))
             {
 				//如果按下左鍵往左走
 				if(Input.GetKey(KeyCode.LeftArrow))
                 {
+					
 					vel.x = -runSpeed;
 				}
 				//如果按下右鍵往右走
@@ -84,7 +88,7 @@ public class PlayerControl : MonoBehaviour
             {
 				vel.x = 0;
 			}
-
+			
 			//跳躍的按鈕是上鍵
 			//如果人物離地<0.1的話可以跳躍
 			if(Input.GetKey(KeyCode.UpArrow))
@@ -96,24 +100,36 @@ public class PlayerControl : MonoBehaviour
 					GetComponent<AudioSource>().PlayOneShot(jumpSound);
 				}
 			}
+		}*/
+
+			if (joystick.Vertical > 0.5f)
+			{
+				if (jumpCounter < 0.1f)
+				{
+					vel.y = jumpHeight;
+					jumpCounter = 0.1f;
+					GetComponent<AudioSource>().PlayOneShot(jumpSound);
+				}
+			}
+			//如果跳躍撞到東西時會停止跳躍的加速度並且重製碰撞的處理
+			if ((controller.collisionFlags & CollisionFlags.Above) != 0 && canCeiling)
+			{
+				canCeiling = false;
+				vel.y = 0;
+				StartCoroutine(resetCeiling());
+			}
+			vel.x = joystick.Horizontal * runSpeed;
 		}
+
+			//應用動作向量加速度到玩家
+			controller.Move(vel * Time.deltaTime);
+
+			//如果玩家落到限制高度以下將恢復原本位置
+			if (transform.position.y < fall)
+			{
+				SceneManager.LoadScene("選擇關卡");
+			}
 		
-		//如果跳躍撞到東西時會停止跳躍的加速度並且重製碰撞的處理
-		if ((controller.collisionFlags & CollisionFlags.Above) != 0 && canCeiling)
-        {
-			canCeiling = false;
-			vel.y = 0;
-			StartCoroutine(resetCeiling());
-		}
-		
-		//應用動作向量加速度到玩家
-		controller.Move(vel*Time.deltaTime);
-		
-		//如果玩家落到限制高度以下將恢復原本位置
-		if(transform.position.y < fall)
-        {
-			SceneManager.LoadScene("選擇關卡");
-		}
 	}
 	
 	public IEnumerator resetCeiling () 
