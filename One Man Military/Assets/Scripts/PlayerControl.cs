@@ -12,7 +12,15 @@ public class PlayerControl : MonoBehaviour
 	public float fall = -12;
 	//音效.跳躍聲音
 	public AudioClip jumpSound;
-	
+
+	public GameObject hand;
+	public GameObject hand2;
+
+	public SpriteRenderer srPlayer;
+
+	public GameObject bullet;
+
+	public WeaponData Wdata;
 	//撞
 	private RaycastHit hit;
 	//跳躍計時
@@ -28,41 +36,62 @@ public class PlayerControl : MonoBehaviour
 	//是否可以撞到天花板
 	private bool canCeiling = true;
 
-    public SpriteRenderer srPlayer;
+	private FixedJoystick joystick;  //腳色移動控制
 
-	private FixedJoystick joystick;
-	
+	private FixedJoystick shotstick; //射擊控制
+
+	public Transform shotpos;
+
+	private SpriteRenderer srHand;
+	private SpriteRenderer srHand2;
+
+	private Vector2 inipos;		//初始位置
+
+	private float shotcd;
 	void Start () 
     {
 		controller = GetComponent<CharacterController>();
-		joystick = GameObject.Find("虛擬搖桿").GetComponent<FixedJoystick>();
+		joystick = GameObject.Find("虛擬搖桿(移動)").GetComponent<FixedJoystick>();
+		shotstick = GameObject.Find("虛擬搖桿(射擊)").GetComponent<FixedJoystick>();
+		srHand = hand.GetComponent<SpriteRenderer>();
+		srHand2 = hand2.GetComponent<SpriteRenderer>();
 		lookX = transform.localScale.x;
+		inipos = transform.position;
 	}
 	
 	void Update () 
     {
+		MoveControl();
+		shotcontrol();
+
+	}
+
+	private void MoveControl()
+	{
 		//重力
-		if(!controller.isGrounded)
-        {
+		if (!controller.isGrounded)
+		{
 			jumpCounter += Time.deltaTime;
-			vel.y -= Time.deltaTime*40;
+			vel.y -= Time.deltaTime * 40;
 		}
-        else
-        {
+		else
+		{
 			jumpCounter = 0.0f;
 			vel.y = -1;
 		}
-		
+
 		//翻轉人物
-		if(controller.velocity.x > 0)
-        {
-            // transform.localScale = new Vector3(lookX,transform.localScale.y,transform.localScale.z);
-            srPlayer.flipX = false;
+		if (controller.velocity.x > 0)
+		{
+			// transform.localScale = new Vector3(lookX,transform.localScale.y,transform.localScale.z);
+			srPlayer.flipX = false;
+			srHand2.flipX = false;
 		}
-		if(controller.velocity.x < 0)
-        {
-            // transform.localScale = new Vector3(-lookX,transform.localScale.y,transform.localScale.z);
-            srPlayer.flipX = true;
+		if (controller.velocity.x < 0)
+		{
+			// transform.localScale = new Vector3(-lookX,transform.localScale.y,transform.localScale.z);
+			srPlayer.flipX = true;
+			srHand2.flipX = true;
 		}
 
 		//設定移動按鍵
@@ -121,15 +150,37 @@ public class PlayerControl : MonoBehaviour
 			vel.x = joystick.Horizontal * runSpeed;
 		}
 
-			//應用動作向量加速度到玩家
-			controller.Move(vel * Time.deltaTime);
+		//應用動作向量加速度到玩家
+		controller.Move(vel * Time.deltaTime);
 
-			//如果玩家落到限制高度以下將恢復原本位置
-			if (transform.position.y < fall)
+		//如果玩家落到限制高度以下將恢復原本位置
+		if (transform.position.y < fall)
+		{
+			transform.position = inipos;
+		}
+	}
+
+	private void shotcontrol()
+	{
+		float velx = shotstick.Horizontal;
+		float velz = shotstick.Vertical;
+		Quaternion ro = Quaternion.Euler(hand.transform.position.x, hand.transform.position.y, velz*90);
+		hand.transform.rotation = ro;
+		print(Mathf.Sqrt(Mathf.Pow(velx, 2) + Mathf.Pow(velz, 2)));
+		if (Mathf.Sqrt(Mathf.Pow(velx, 2) + Mathf.Pow(velz, 2)) >= 0.5) 
+		{
+			if (shotcd < Wdata.cdtime && shotcd != 0)
 			{
-				SceneManager.LoadScene("選擇關卡");
+				shotcd += Time.deltaTime;
 			}
-		
+			else
+			{
+				shotcd = 0;
+				StartCoroutine(CreateBullet());
+				shotcd += Time.deltaTime;
+			}
+		}
+
 	}
 	
 	public IEnumerator resetCeiling () 
@@ -137,10 +188,21 @@ public class PlayerControl : MonoBehaviour
 		yield return new WaitForSeconds (0.25f);
 		canCeiling = true;
 	}
-	
-	void died () 
+
+	private IEnumerator CreateBullet()
+	{
+		GameObject temp;
+		yield return new WaitForSeconds(0.5f);
+		temp = Instantiate(bullet, shotpos.position,shotpos.rotation);
+		temp.GetComponent<Rigidbody2D>().AddForce(shotpos.right *Wdata.shootspeed);
+		temp.AddComponent<Weapon>();
+		Destroy(temp, 3);
+	}
+	private void died () 
     {
 		canControl = false;
 		vel.x = 0;
 	}
+
+
 }
