@@ -21,6 +21,8 @@ public class PlayerControl : MonoBehaviour
 	public GameObject bullet;
 
 	public WeaponData Wdata;
+
+	public GameManger gm;
 	//撞
 	private RaycastHit hit;
 	//跳躍計時
@@ -55,6 +57,7 @@ public class PlayerControl : MonoBehaviour
 		shotstick = GameObject.Find("虛擬搖桿(射擊)").GetComponent<FixedJoystick>();
 		srHand = hand.GetComponent<SpriteRenderer>();
 		srHand2 = hand2.GetComponent<SpriteRenderer>();
+		gm = FindObjectOfType<GameManger>();
 		lookX = transform.localScale.x;
 		inipos = transform.position;
 	}
@@ -194,7 +197,7 @@ public class PlayerControl : MonoBehaviour
 		GameObject temp;
 		yield return new WaitForSeconds(0.5f);
 		temp = Instantiate(bullet, shotpos.position,shotpos.rotation);
-		temp.GetComponent<Rigidbody2D>().AddForce(shotpos.right *Wdata.shootspeed);
+		temp.GetComponent<Rigidbody>().AddForce(shotpos.right *Wdata.shootspeed);
 		temp.AddComponent<Weapon>();
 		Destroy(temp, 3);
 	}
@@ -204,5 +207,13 @@ public class PlayerControl : MonoBehaviour
 		vel.x = 0;
 	}
 
+	private void OnControllerColliderHit(ControllerColliderHit hit)
+	{
+		print(hit.gameObject.name);
+		if (hit.collider.name == "通關")
+		{
+			gm.pass();
+		}
 
+	}
 }

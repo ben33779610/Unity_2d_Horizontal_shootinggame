@@ -56,7 +56,7 @@ public class Playerhealth : MonoBehaviour
 		if (curhealth <= 0 && dead == false)
 		{
 			dead = true;
-			Instantiate(deathanim, transform.position, Quaternion.Euler(0, 180, 0));
+			//Instantiate(deathanim, transform.position, Quaternion.Euler(0, 180, 0));
 			BroadcastMessage("died", SendMessageOptions.DontRequireReceiver);
 
 			// 將2D渲染設為關閉
@@ -112,8 +112,9 @@ public class Playerhealth : MonoBehaviour
 		health = hearts ;
 		curhealth = health;
 		auo = GetComponent<AudioSource>();
+		rend = GetComponent<SpriteRenderer>();
 
-		
+
 
 
 	}
@@ -137,13 +138,14 @@ public class Playerhealth : MonoBehaviour
 	private void OnControllerColliderHit(ControllerColliderHit hit)
 	{
 		
-	/*	if (hit.gameObject.tag == "enemy" || hit.gameObject.tag == "trap")
+		if (hit.gameObject.tag == "enemy" || hit.gameObject.tag == "trap")
 		{
+			
 			if (cangetHurt && !dead)
 			{
 				cangetHurt = false;
 				GetComponent<AudioSource>().PlayOneShot(hitsound);
-				health -= 1;
+				curhealth -= 1;
 				StartCoroutine(CheckHealth());
 				StartCoroutine(ResetCanHurt());
 				                             }
@@ -154,7 +156,7 @@ public class Playerhealth : MonoBehaviour
 		Destroy(hit.gameObject);
 		AddHealth();
 		}
-		*/
+		
 	}
 
 
