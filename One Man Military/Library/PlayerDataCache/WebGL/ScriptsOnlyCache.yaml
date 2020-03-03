@@ -12,7 +12,6 @@ ScriptsOnlyBuild:
     - playerAnimator
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
@@ -671,4 +670,4 @@ ScriptsOnlyBuild:
   - "Assets/Scenes/\u958B\u59CB.unity"
   - "Assets/Scenes/\u9078\u64C7\u95DC\u5361.unity"
   - "Assets/Scenes/\u904A\u6232\u95DC\u5361-1.unity"
-  playerPath: C:/Users/appedu/Desktop/One Man Military
+  playerPath: C:/Users/appedu/Desktop/web
