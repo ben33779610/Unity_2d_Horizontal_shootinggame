@@ -194,11 +194,11 @@ public class PlayerControl : MonoBehaviour
 
 	private IEnumerator CreateBullet()
 	{
-		GameObject temp;
 		yield return new WaitForSeconds(0.5f);
+		GameObject temp;
 		temp = Instantiate(bullet, shotpos.position,shotpos.rotation);
-		temp.GetComponent<Rigidbody>().AddForce(shotpos.right *Wdata.shootspeed);
-		temp.AddComponent<Weapon>();
+		temp.GetComponent<Rigidbody>().AddForce(temp.transform.right * Wdata.shootspeed);
+		//temp.AddComponent<Weapon>();
 		Destroy(temp, 3);
 	}
 	private void died () 
